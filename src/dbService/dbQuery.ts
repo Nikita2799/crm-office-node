@@ -21,9 +21,8 @@ export async function  dbQuerySelectClient (paramsQuery:Array<any>,callback:Func
            return callback(err,null)
         console.log(err,res);
            
-        if (res.lenght === 0){
+        if (res.length === 0){
             return callback(null,res)
-            
         }
            
        return callback(null,res[0])
@@ -103,5 +102,16 @@ export async function  dbQueryAddTabel (paramsQuery:Array<any>,callback:Function
            return callback(err,null)
         
        return callback(null,res)
+    }) 
+}
+
+export async function  dbQueryUpdate (paramsQuery:Array<any>,callback:Function){
+    let sql = "UPDATE ?? SET? WHERE ??=? "
+    
+    dbConnect.query(sql, paramsQuery, (err, res) => {  
+        if (err)
+           return callback(err,null);
+        
+       return callback(null,res);
     }) 
 }

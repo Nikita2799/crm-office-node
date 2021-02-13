@@ -9,9 +9,10 @@ export const getOneUserById = async (req:Request,res:Response) => {
 
         await dbQuerySelect(paramsQuery,(err:MysqlError,result:any)=>{
             if(err) return res.status(400).json({message: "wrong somtheing"})
-
+            console.log(result);
+            
             if (result) 
-                return res.status(200).json(result)
+                return res.status(200).json({name:result.name,lastName:result.lastName})
             else 
                 return res.status(204).json({message:"user not found"})   
         },false)

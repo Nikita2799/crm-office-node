@@ -1,6 +1,6 @@
 import {Request,Response} from 'express';
 import { MysqlError } from 'mysql';
-import { dbQueryDelete, dbQueryShowDb } from '../../dbService/dbQuery';
+import { dbQueryDelete, dbQueryShowDb, dbQueryUpdate } from '../../dbService/dbQuery';
 import { findTable } from './helperService/findTable';
 
 export const deleteAll = async (req:Request,res:Response) => {
@@ -52,6 +52,23 @@ export const showAllTable = async (req:Request,res:Response) => {
                 return res.status(200).json(listTable)
             else 
                 return res.status(204).json({message:"tables not found"}) 
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(400).json({message: "bad request"})
+    }
+}
+
+export const updateUser = async (req:Request,res:Response) => {
+    try {
+        const id = req.params.id
+        const paramsQuery = ['users',{...req.body},'id',id]
+        
+        await dbQueryUpdate(paramsQuery,async (err:MysqlError,result:any)=>{
+            if(err) return res.status(500).json({message: err})
+            
+            return res.status(200).json({message: 'user update'})
+        
         })
     } catch (err) {
         console.log(err)

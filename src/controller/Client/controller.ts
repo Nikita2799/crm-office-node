@@ -1,6 +1,6 @@
 import {Request,Response} from 'express';
 import { MysqlError } from 'mysql';
-import {dbQueryJoin, dbQuerySelect, dbQuerySelectClient,dbQueryShowDb,dbQuerySelectClientWorked} from '../../dbService/dbQuery';
+import {dbQueryJoin, dbQuerySelect, dbQuerySelectClient,dbQueryShowDb,dbQuerySelectClientWorked, dbQueryDelete} from '../../dbService/dbQuery';
 import {findTable} from '../Admin/helperService/findTable';
 
 export const getClient = async (req:Request,res:Response) =>{
@@ -16,7 +16,11 @@ export const getClient = async (req:Request,res:Response) =>{
                 if(err) return res.status(500).json({message: err})
                 
                 if(result.length===0){
+                    console.log(list.length);
+                    
                     if(list.length>1){
+                        console.log('1232131');
+                        
                         await dbQuerySelectClient([list[1],'status',0],async (err:MysqlError,resultSecond:any)=>{
                             if(err) return res.status(500).json({message: err})
 
@@ -40,7 +44,11 @@ export const getClient = async (req:Request,res:Response) =>{
                         })
                     }
                     else{
-                        return res.status(204).json({message:'db empty'})
+                        dbQueryDelete([list[0]],async (err:MysqlError,action:any)=>{
+                            if(err) return res.status(500).json({message:'db err'})
+                            
+                            return res.status(204).json({message:'db empty'})
+                        },false)
                     }    
                 }
                 else{   
