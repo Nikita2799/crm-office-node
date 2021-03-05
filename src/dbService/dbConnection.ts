@@ -1,10 +1,10 @@
-import mysql from 'mysql';
-import config from '../../config/config'
+import mysql from "mysql";
+import config from "../../config/config";
 
 export const dbConnect = mysql.createPool({
-    multipleStatements:true,
-    host: config.DATABASE.DB_HOST,
-    user: config.DATABASE.DB_USER,
-    password: config.DATABASE.DB_PASSWORD,
-    database: config.DATABASE.DB_NAME
-})
+  multipleStatements: true,
+  host: config.DATABASE.host,
+  user: config.DATABASE.user,
+  password: config.DATABASE.password,
+  database: config.DATABASE.database,
+});
