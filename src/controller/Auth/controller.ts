@@ -10,7 +10,7 @@ const db: DatabaseApi = new DatabaseApi();
 export const LogIn = async (req: Request, res: Response) => {
   try {
     const { login, password } = <IUser>req.body;
-    const paramsQuery = ["users", "login", login];
+    const paramsQuery = ["users", "login", "login"];
 
     db.auth
       .login(paramsQuery)
