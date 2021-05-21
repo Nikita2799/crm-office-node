@@ -10,7 +10,7 @@ export class AuthApi {
 
     const responce = await new Promise((resolve, reject) => {
       this.connection.query(sqlString, params, (err, result) => {
-        if (err) reject(new Error(err.message));
+        if (err) reject(err.errno);
 
         resolve(result);
       });
@@ -23,15 +23,21 @@ export class AuthApi {
     const sqlString = "SELECT * FROM ?? WHERE ??=?";
 
     const responce = await new Promise((resolve, reject) => {
-      this.connection.query(sqlString, params, (err, result) => {
+      this.connection.query(sqlString, params, async (err, result) => {
         if (err) reject(new Error(err.message));
-        if (!result.length) reject(result);
-
-        const token = jwt.sign({ userId: result.id }, config.SECURITY.TOKEN!, {
-          expiresIn: "5h",
-        });
-
-        resolve({ result, token });
+        if (result.length === 0) reject(result);
+        else {
+          setTimeout(() => {
+            const token = jwt.sign(
+              { userId: result[0].id },
+              config.SECURITY.TOKEN!,
+              {
+                expiresIn: "10h",
+              }
+            );
+            resolve({ result, token });
+          }, 0);
+        }
       });
     });
 
