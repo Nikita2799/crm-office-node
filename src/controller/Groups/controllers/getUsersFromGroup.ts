@@ -5,12 +5,17 @@ const db: DatabaseApi = new DatabaseApi();
 
 export const getUsersFromGroup = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const params = ["users_group", "groupId", id];
+    const { groupid } = req.params;
+    const params = ["users", "users_group", groupid];
 
-    const result = await db.group.getUsersFromGroup(params);
+    const result: any = await db.group.getUsersFromGroup(params);
+    console.log(result, "users");
 
-    res.status(200).json(result);
+    let arrayUser = result.map((u: any) => {
+      return { id: u.userId, name: u.name, lastName: u.lastName };
+    });
+
+    res.status(200).json(arrayUser);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "wrong some" });

@@ -9,6 +9,7 @@ const db: DatabaseApi = new DatabaseApi();
 export const postBase = async (req: Request, res: Response) => {
   try {
     const { nameTabel } = req.body;
+    console.log(req.body);
 
     const params: Array<any> = [nameTabel + "_wp"];
 

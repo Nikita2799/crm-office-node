@@ -6,6 +6,9 @@ const db: DatabaseApi = new DatabaseApi();
 export const postGroupe = async (req: Request, res: Response) => {
   try {
     const { userList, nameTabel, nameGroup } = req.body;
+
+    if (nameTabel.lenght === 0 || nameGroup.lenght === 0)
+      return res.status(422).json({ message: "empty name tabel" });
     const groupParams = [
       "groups",
       { nameTabel: nameTabel + "_wp", nameGroup: nameGroup },

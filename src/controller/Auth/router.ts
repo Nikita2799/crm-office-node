@@ -5,6 +5,6 @@ import { middelwareToken } from "../../middelware";
 
 export const AuthRouter = (router: any) => {
   router.post("/auth", LogIn);
-  router.post("/auth/admin", middelwareToken, LoginAdmin);
+  router.post("/auth/admin", LoginAdmin);
   router.post("/auth/reg", middelwareToken, Regestry);
 };

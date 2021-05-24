@@ -130,4 +130,18 @@ export class ClientApi {
 
     return responce;
   }
+
+  async deleteBase(params: Array<unknown>): Promise<unknown> {
+    const sqlString = "DROP TABLE ??";
+
+    const responce = await new Promise((resolve, reject) => {
+      this.connection.query(sqlString, params, (err, result: Array<any>) => {
+        if (err) reject(new Error(err.message));
+
+        resolve(result);
+      });
+    });
+
+    return responce;
+  }
 }

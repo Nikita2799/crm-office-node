@@ -8,7 +8,9 @@ export const updateGroup = async (req: Request, res: Response) => {
     const { groupId } = req.params;
     const params = ["groups", { ...req.body }, "groupId", groupId];
 
-    res.status(200).json();
+    await db.group.updateGroup(params);
+
+    res.status(200).json({ message: "success" });
   } catch (err) {
     console.log(err);
     if (err === 1062)
