@@ -8,5 +8,5 @@ export const ClientRouter = (router: any) => {
   router.post("/client/post_base", postBase);
   router.post("/client/update_status", middelwareToken, changeStatusClient);
   router.get("/client/get_info", getInfoBase);
-  router.get("/client/get_client/:userId", getClient);
+  router.get("/client/get_client", middelwareToken, getClient);
 };

@@ -10,7 +10,9 @@ export class ClientApi {
 
     const responce = await new Promise((resolve, reject) => {
       this.connection.query(sqlString, params, (err, result) => {
-        console.log(result);
+        console.log(err);
+
+        console.log(result, "test");
 
         if (err) reject(new Error(err.message));
         if (result.length === 0) reject(0);

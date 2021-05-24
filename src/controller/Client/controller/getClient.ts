@@ -5,10 +5,13 @@ const db: DatabaseApi = new DatabaseApi();
 
 export const getClient = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.user;
     const params: Array<any> = ["groups", "users_group", userId];
 
+    console.log(userId);
+
     const { nameTabel }: any = await db.client.getUserGroup(params);
+    console.log(nameTabel, "nametabel");
 
     let client: any = await db.client.getClientInWork([
       nameTabel,
