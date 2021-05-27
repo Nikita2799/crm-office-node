@@ -6,10 +6,14 @@ const db: DatabaseApi = new DatabaseApi();
 
 export const changePassword = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { userId } = req.user;
+    console.log(req.user);
+
     const { password } = req.body;
+    console.log(req.body);
+
     const hashPassword = await bcrypt.hash(password, 12);
-    const params = ["users", { password: hashPassword }, "id", id];
+    const params = ["users", { password: hashPassword }, "id", userId];
 
     await db.admin.updatePassword(params);
 

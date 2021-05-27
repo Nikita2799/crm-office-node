@@ -41,6 +41,7 @@ export const getClient = async (req: Request, res: Response) => {
     console.log(err);
     if (err === 0)
       return res.status(422).json({ Message: "user not add non group" });
+
     if (err === 1146) return res.status(422).json({ message: "wrong tabel" });
 
     res.status(500).json({ message: "wrong some" });

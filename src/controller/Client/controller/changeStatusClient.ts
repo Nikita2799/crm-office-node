@@ -5,9 +5,10 @@ const db: DatabaseApi = new DatabaseApi();
 
 export const changeStatusClient = async (req: Request, res: Response) => {
   try {
-    const userId = req.user;
+    const { userId } = req.user;
     const { status, clientId } = req.body;
     const params: Array<any> = ["groups", "users_group", userId];
+    console.log(userId, status, clientId);
 
     const { nameTabel }: any = await db.client.getUserGroup(params);
 

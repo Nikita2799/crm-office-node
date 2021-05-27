@@ -9,12 +9,16 @@ const db: DatabaseApi = new DatabaseApi();
 export const postBase = async (req: Request, res: Response) => {
   try {
     const { nameTabel } = req.body;
-    console.log(req.body);
+
+    if (nameTabel.length === 0)
+      return res.status(422).json({ message: "empty name" });
 
     const params: Array<any> = [nameTabel + "_wp"];
 
     await db.client.postNameBase(params);
-    await excel_to_base(nameTabel + "_wp");
+    const err = await excel_to_base(nameTabel + "_wp", res);
+
+    if (err) return res.status(422).json({ message: "incorrect base data" });
 
     res.status(200).json({ message: "success" });
   } catch (err) {
@@ -25,28 +29,42 @@ export const postBase = async (req: Request, res: Response) => {
   }
 };
 
-async function excel_to_base(nameTable: string) {
+async function excel_to_base(nameTable: string, res: Response) {
   const wb = xlsx.readFile("file.xlsx");
   const ws = wb.Sheets["Лист1"];
+
   const data: Array<IClient> = xlsx.utils.sheet_to_json(ws);
 
-  data.forEach(async (client: IClient) => {
-    const phone = await validationPhone(client.phone);
+  if (data.length < 0) return true;
+
+  for (let i = 0; i < data.length; i++) {
+    if (
+      data[i].name === undefined ||
+      data[i].address === undefined ||
+      data[i].phone === undefined
+    ) {
+      return true;
+    }
+
+    const phone = await validationPhone(data[i].phone);
     const params = [
       `${nameTable}`,
       {
         userId: 0,
-        name: client.name,
+        name: data[i].name,
         phone: phone,
-        address: client.address,
+        address: data[i].address,
+        desc: "",
+        card: "",
         status: 0,
       },
     ];
 
     await db.client.postBase(params);
-  });
+  }
 
   await deleteFile();
+  return false;
 }
 
 const validationPhone = async (phone: string) => {

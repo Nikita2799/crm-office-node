@@ -18,6 +18,21 @@ export class UserApi {
     return responce;
   }
 
+  async updatePassword(params: Array<unknown>) {
+    const sqlString = "UPDATE ?? SET? WHERE ??=?";
+
+    const responce = new Promise((resolve, reject) => {
+      this.connection.query(sqlString, params, (err, res) => {
+        if (err?.errno === 1062) reject(0);
+        if (err) reject(err);
+
+        resolve(res);
+      });
+    });
+
+    return responce;
+  }
+
   async updateUser(params: Array<unknown>) {
     const sqlString = "UPDATE ?? SET? WHERE ??=?";
 
